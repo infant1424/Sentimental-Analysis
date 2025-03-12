@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sentiment Analysis</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 50px;
+        }
+        textarea {
+            width: 60%;
+            height: 100px;
+            font-size: 16px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        #result {
+            margin-top: 20px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Sentiment Analysis</h2>
+    <p>Enter text to analyze its sentiment:</p>
+
+    <form id="sentimentForm">
+        <textarea id="textInput" name="text"></textarea><br><br>
+        <button type="submit">Analyze Sentiment</button>
+    </form>
+
+    <div id="result"></div>
+
+    <script>
+        document.getElementById("sentimentForm").onsubmit = async function(event) {
+            event.preventDefault();
+            
+            let formData = new FormData();
+            formData.append("text", document.getElementById("textInput").value);
+
+            let response = await fetch("/predict", {
+                method: "POST",
+                body: formData
+            });
+
+            let result = await response.json();
+            document.getElementById("result").innerText = "Sentiment: " + result.sentiment;
+        };
+    </script>
+
+</body>
+</html>
